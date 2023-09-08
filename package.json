@@ -1,0 +1,19 @@
+{
+  "name": "additional-math",
+  "version": "0.0.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "lint": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.26.2",
+    "jest": "^29.6.4",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2"
+  }
+}
