@@ -11,7 +11,12 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.17",
+    "@babel/preset-env": "^7.22.15",
+    "@babel/preset-typescript": "^7.22.15",
     "@changesets/cli": "^2.26.2",
+    "@jest/globals": "^29.6.4",
+    "babel-jest": "^29.6.4",
     "jest": "^29.6.4",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2"
