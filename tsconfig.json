@@ -14,6 +14,7 @@
     "useUnknownInCatchVariables": true,               /* Default catch clause variables as 'unknown' instead of 'any'. */
     "noUncheckedIndexedAccess": true,                 /* Add 'undefined' to a type when accessed using an index. */
     "skipLibCheck": true,
-    "noEmit": true,                           
+    "noEmit": true,   
+    "noPropertyAccessFromIndexSignature": false,                        
   }
 }

@@ -1,13 +1,31 @@
 import { EqualableTo } from '../Interfaces/EqualableTo';
 import { IsFieldOf } from '../Interfaces/IsFieldOf';
+import { CanBeCastToComplex, ComplexLike } from './Complex.auxillary';
 
 export class Complex
-  implements EqualableTo<Complex | number>, IsFieldOf<Complex>
+  implements EqualableTo<CanBeCastToComplex>, IsFieldOf<Complex>
 {
   constructor(
     private readonly _real: number = 0,
     private readonly _imaginary: number = 0
   ) {}
+
+  
+  static copyOf(other: Complex): Complex {
+    return new Complex(other.real, other.imaginary);
+  }
+
+  get copy(): Complex {
+    return Complex.copyOf(this);
+  }
+
+  static from(complexLike: CanBeCastToComplex): Complex {
+    return typeof complexLike === 'number'
+      ? new Complex(complexLike)
+      : complexLike instanceof Complex
+      ? complexLike.copy
+      : new Complex(complexLike.real, complexLike.imaginary);
+  }
 
   public get real() {
     return this._real;
@@ -75,15 +93,59 @@ export class Complex
     return Complex.inverseOf(this);
   }
 
+  static zero() {
+    return new Complex(0);
+  }
+
   isZero(): boolean {
     return this.real === 0 && this.imaginary === 0;
+  }
+
+  static isZero(complex: CanBeCastToComplex): boolean {
+    return typeof complex === 'number'
+      ? complex === 0
+      : complex instanceof Complex
+      ? complex.isZero()
+      : complex.real === 0 && complex.imaginary === 0;
+  }
+
+  static one() {
+    return new Complex(1);
+  }
+
+  isOne(): boolean {
+    return this.real === 1 && this.imaginary === 0;
+  }
+
+  static isOne(complex: CanBeCastToComplex): boolean {
+    return typeof complex === 'number'
+    ? complex === 1
+    : complex instanceof Complex
+    ? complex.isOne()
+    : complex.real === 1 && complex.imaginary === 1;
+  }
+
+  static i(): Complex {
+    return new Complex(0, 1);
+  }
+
+  isI(): boolean {
+    return this.real === 0 && this.imaginary === 1;
+  }
+
+  static isI(complex: CanBeCastToComplex): boolean {
+    return typeof complex === 'number'
+    ? false
+    : complex instanceof Complex
+    ? complex.isI()
+    : complex.real === 0 && complex.imaginary === 1;
   }
 
   isInfinite(): boolean {
     return this.real === Infinity || this.imaginary === Infinity;
   }
 
-  equalsTo(other: number | Complex): boolean {
+  equalsTo(other: CanBeCastToComplex): boolean {
     if (typeof other === 'number') {
       return this.equalsTo(new Complex(other));
     }
@@ -130,4 +192,28 @@ export class Complex
   get argument(): number {
     return Complex.argumentOf(this);
   }
+
+  static squared(complex: Complex | number): Complex {
+    return typeof complex === 'number'
+      ? new Complex(complex ** 2)
+      : complex.multiplyBy(complex);
+  }
+
+  get squared(): Complex {
+    return Complex.squared(this);
+  }
+
+  static sqrt({ real, imaginary }: Complex): [Complex, Complex] {
+    const squareRoot = new Complex(
+      Math.sqrt((real + Math.sqrt(real ** 2 + imaginary ** 2)) / 2),
+      Math.sign(imaginary) *
+        Math.sqrt((-real + Math.sqrt(real ** 2 + imaginary ** 2)) / 2)
+    );
+    return [squareRoot, squareRoot.opposite];
+  }
+
+  get sqrt(): [Complex, Complex] {
+    return Complex.sqrt(this);
+  }
+
 }

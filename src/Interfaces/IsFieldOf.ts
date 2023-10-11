@@ -1,9 +1,5 @@
-export interface IsFieldOf<T> {
-  add(other: T): T;
-  subtract(other: T): T;
-  multiplyBy(other: T): T;
-  divideBy(other: T): T;
-  get opposite(): T;
+import { IsRingOf } from './IsRingOf';
+
+export interface IsFieldOf<T> extends IsRingOf<T> {
   get inverse(): T;
-  isZero(): boolean;
 }

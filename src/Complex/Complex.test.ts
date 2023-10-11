@@ -1,5 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { Complex } from './Complex';
+import { ComplexLike } from './Complex.auxillary';
 
 describe('Testing Complex Numbers', () => {
   test('Create complex zero and test getters', () => {
@@ -32,11 +33,97 @@ describe('Testing Complex Numbers', () => {
     expect(new Complex(1, 1).equalsTo(new Complex(1, 1))).toBe(true);
   });
 
-  test('Is complex a complex zero with isZero()', () => {
+  test('Complex equals to complex like objects', () => {
+    const complex = new Complex(3, 4);
+    const complexLike: ComplexLike = {
+      real: 3,
+      imaginary: 4,
+    };
+    expect(complex.equalsTo(complexLike)).toBe(true);
+  });
+
+  test('Complex copy using Complex.copyOf', () => {
+    const complex = new Complex(2, 5);
+    expect(Complex.copyOf(complex).equalsTo(complex)).toBe(true);
+  });
+
+  test('Complex copy using this.copy', () => {
+    const complex = new Complex(2, 5);
+    expect(complex.copy.equalsTo(complex)).toBe(true);
+  });
+
+  test('Casting a complex to a complex with Complex.from', () => {
+    const complex = new Complex(2, 5);
+    expect(Complex.from(complex).equalsTo(complex)).toBe(true);
+  });
+
+  test('Casting a real to a complex with Complex.from', () => {
+    const real = 3;
+    const complex = new Complex(real);
+    expect(Complex.from(real).equalsTo(complex)).toBe(true);
+  });
+
+  test('Casting a complex like object to a complex with Complex.from', () => {
+    const complexLike: ComplexLike = {
+      real: 2,
+      imaginary: 5,
+    };
+    const complex = new Complex(2, 5);
+    expect(Complex.from(complexLike).equalsTo(complex)).toBe(true);
+  });
+
+  test('Creating a complex zero with Complex.zero()', () => {
+    expect(Complex.zero().equalsTo(new Complex(0))).toBe(true);
+  });
+
+  test('Is complex a complex zero with Complex.isZero()', () => {
+    expect(Complex.isZero(new Complex(0, 0))).toBe(true);
+    expect(Complex.isZero(new Complex(4, 0))).toBe(false);
+    expect(Complex.isZero(new Complex(0, 4))).toBe(false);
+    expect(Complex.isZero(new Complex(4, 4))).toBe(false);
+  });
+
+  test('Is complex a complex zero with this.isZero()', () => {
     expect(new Complex(0, 0).isZero()).toBe(true);
     expect(new Complex(4, 0).isZero()).toBe(false);
     expect(new Complex(0, 4).isZero()).toBe(false);
     expect(new Complex(4, 4).isZero()).toBe(false);
+  });
+
+  test('Creating a complex one with Complex.one()', () => {
+    expect(Complex.one().equalsTo(new Complex(1))).toBe(true);
+  });
+
+  test('Is complex a complex one with Complex.isOne()', () => {
+    expect(Complex.isOne(new Complex(1, 0))).toBe(true);
+    expect(Complex.isOne(new Complex(4, 0))).toBe(false);
+    expect(Complex.isOne(new Complex(0, 4))).toBe(false);
+    expect(Complex.isOne(new Complex(4, 4))).toBe(false);
+  });
+
+  test('Is complex a complex one with this.isOne()', () => {
+    expect(new Complex(1, 0).isOne()).toBe(true);
+    expect(new Complex(4, 0).isOne()).toBe(false);
+    expect(new Complex(0, 4).isOne()).toBe(false);
+    expect(new Complex(4, 4).isOne()).toBe(false);
+  });
+
+  test('Creating a complex i with Complex.i()', () => {
+    expect(Complex.i().equalsTo(new Complex(0, 1))).toBe(true);
+  });
+
+  test('Is complex a complex i with Complex.isI()', () => {
+    expect(Complex.isI(new Complex(0, 1))).toBe(true);
+    expect(Complex.isI(new Complex(4, 0))).toBe(false);
+    expect(Complex.isI(new Complex(0, 4))).toBe(false);
+    expect(Complex.isI(new Complex(4, 4))).toBe(false);
+  });
+
+  test('Is complex a complex i with this.isI()', () => {
+    expect(new Complex(0, 1).isI()).toBe(true);
+    expect(new Complex(4, 0).isI()).toBe(false);
+    expect(new Complex(0, 4).isI()).toBe(false);
+    expect(new Complex(4, 4).isI()).toBe(false);
   });
 
   test('Is complex a complex zero with equalsTo()', () => {
@@ -253,5 +340,27 @@ describe('Testing Complex Numbers', () => {
     const argument = new Complex(1, 1).argument;
     expect(left >= argument && argument <= right).toBe(true);
     expect(new Complex(0).argument).toBeNaN();
+  });
+
+  test('Squared complex number using Complex.squared', () => {
+    expect(Complex.squared(new Complex(0, 1)).equalsTo(-1)).toBe(true);
+  });
+
+  test('Squared complex number using this.squared', () => {
+    expect(new Complex(0, 1).squared.equalsTo(-1)).toBe(true);
+  });
+
+  test('Complex square root using Complex.sqrt', () => {
+    const [first, second] = Complex.sqrt(new Complex(3, 4));
+    expect(first.equalsTo(new Complex(2, 1))).toBe(true);
+    expect(second.equalsTo(new Complex(-2, -1))).toBe(true);
+    expect(first.equalsTo(second.opposite)).toBe(true);
+  });
+
+  test('Complex square root using this.sqrt', () => {
+    const [first, second] = new Complex(3, 4).sqrt;
+    expect(first.equalsTo(new Complex(2, 1))).toBe(true);
+    expect(second.equalsTo(new Complex(-2, -1))).toBe(true);
+    expect(first.equalsTo(second.opposite)).toBe(true);
   });
 });
